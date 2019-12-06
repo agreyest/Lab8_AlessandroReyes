@@ -104,6 +104,14 @@ public class Principal extends javax.swing.JFrame {
         jl_buzon = new javax.swing.JList<>();
         jLabel13 = new javax.swing.JLabel();
         btn_buzon_r = new javax.swing.JButton();
+        jd_emensaje = new javax.swing.JDialog();
+        cb_emensaje = new javax.swing.JComboBox<>();
+        jLabel14 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        ta_mensaje = new javax.swing.JTextArea();
+        btn_enviarM_r_ = new javax.swing.JButton();
+        btn_enviarM = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jm_acciones = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -413,6 +421,65 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btn_buzon_r, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
+        jLabel14.setText("Seleccion el contacto al que le quiere enviar el mensaje");
+
+        ta_mensaje.setColumns(20);
+        ta_mensaje.setRows(5);
+        jScrollPane4.setViewportView(ta_mensaje);
+
+        btn_enviarM_r_.setText("Regresar");
+        btn_enviarM_r_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_enviarM_r_MouseClicked(evt);
+            }
+        });
+
+        btn_enviarM.setText("Enviar mensaje");
+        btn_enviarM.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_enviarMMouseClicked(evt);
+            }
+        });
+
+        jLabel15.setText("Escriba su mensaje");
+
+        javax.swing.GroupLayout jd_emensajeLayout = new javax.swing.GroupLayout(jd_emensaje.getContentPane());
+        jd_emensaje.getContentPane().setLayout(jd_emensajeLayout);
+        jd_emensajeLayout.setHorizontalGroup(
+            jd_emensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_emensajeLayout.createSequentialGroup()
+                .addGroup(jd_emensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cb_emensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jd_emensajeLayout.createSequentialGroup()
+                .addComponent(btn_enviarM_r_, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_enviarM, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jd_emensajeLayout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addGroup(jd_emensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+        jd_emensajeLayout.setVerticalGroup(
+            jd_emensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_emensajeLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cb_emensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGroup(jd_emensajeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_enviarM, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(btn_enviarM_r_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -459,6 +526,11 @@ public class Principal extends javax.swing.JFrame {
         jm_acciones.add(jMenu1);
 
         jmi_enviarM.setText("Enviar Mensaje");
+        jmi_enviarM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmi_enviarMActionPerformed(evt);
+            }
+        });
         jm_acciones.add(jmi_enviarM);
 
         jmi_buzon.setText("Buzon de salida");
@@ -567,18 +639,17 @@ public class Principal extends javax.swing.JFrame {
         if(jl_eliC.getSelectedIndex() >= 0){
             Dba db = new Dba("./Database1.mdb");
             db.conectar();
+            int x=jl_eliC.getSelectedIndex();
             try {
-                db.query.execute("delete from Contactos where cuenta=0");
+                db.query.execute("delete from Contactos where cuenta=contactos.get(x).getNumero()");
                 db.commit();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
             db.desconectar();
-            contactos.remove(jl_eliC.getSelectedIndex());
+            contactos.remove(x);
             DefaultListModel modelo = (DefaultListModel) jl_eliC.getModel();
-            for (int i = 0; i < contactos.size(); i++) {
-                modelo.addElement(contactos.get(i).toString());
-            }
+            modelo.removeElementAt(x);
             jl_eliC.setModel(modelo);
             JOptionPane.showMessageDialog(jd_eliminarC, "Contacto eliminado con exito");
         }
@@ -700,14 +771,19 @@ public class Principal extends javax.swing.JFrame {
         }
         if(bande){
             contactos.get(x).setNombre(tf_mod_nom_.getText());
+            String nom = tf_mod_nom_.getText();
             contactos.get(x).setNumero(Integer.parseInt(tf_mod_num_.getText()));
+            int num = Integer.parseInt(tf_mod_num_.getText());
             contactos.get(x).setEdad(js_mod_e_.getComponentCount());
-            contactos.get(x).setCorreo(tf_mod_correo_.getText());
+            int ed =  js_mod_e_.getComponentCount();
+            contactos.get(x).setCorreo(tf_mod_correo_.getText()); 
+            String cor=tf_mod_correo_.getText();
             contactos.get(x).setDireccion(tf_mod_dir_.getText());
+            String dir=tf_mod_dir_.getText();
             Dba db = new Dba("./Database1.mdb");
             db.conectar();
             try {
-                db.query.execute("update Contactos set direccion='col Por ahi' where cuenta=0");
+                db.query.execute("update Contactos set Numero='num', Nombre='nom', Edad='ed', Correo='cor', Direccion='dir'  where cuenta=0");
                 db.commit();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -773,6 +849,37 @@ public class Principal extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_btn_buzon_rMouseClicked
 
+    private void jmi_enviarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_enviarMActionPerformed
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(contactos.toArray());
+        cb_emensaje.setModel(modelo);
+        
+        this.setVisible(false);
+        jd_emensaje.setModal(true);
+        jd_emensaje.pack();
+        jd_emensaje.setLocationRelativeTo(this);
+        jd_emensaje.setVisible(true);
+    }//GEN-LAST:event_jmi_enviarMActionPerformed
+
+    private void btn_enviarM_r_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_enviarM_r_MouseClicked
+        ta_mensaje.setText("");
+        
+        jd_emensaje.setModal(false);
+        jd_emensaje.setVisible(false);
+        this.setVisible(true);
+    }//GEN-LAST:event_btn_enviarM_r_MouseClicked
+
+    private void btn_enviarMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_enviarMMouseClicked
+        Contacto temp = (Contacto) cb_emensaje.getSelectedItem();
+        boolean bande = true;
+        if(ta_mensaje.getText()==null){
+            bande = false;
+            JOptionPane.showMessageDialog(jd_emensaje, "Tiene que ingresar un mensaje");
+        }
+        if(bande){
+            mensajes.add(new Mensaje("ayo", temp.getNombre(), new Date(), ta_mensaje.getText()));
+        }
+    }//GEN-LAST:event_btn_enviarMMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -815,14 +922,19 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btn_crear_r_;
     private javax.swing.JButton btn_eliC;
     private javax.swing.JButton btn_eliC_R_;
+    private javax.swing.JButton btn_enviarM;
+    private javax.swing.JButton btn_enviarM_r_;
     private javax.swing.JButton btn_mod_;
     private javax.swing.JButton btn_mod_r_;
+    private javax.swing.JComboBox<String> cb_emensaje;
     private javax.swing.JComboBox<String> cb_modc_;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -837,10 +949,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JDialog jd_agenda;
     private javax.swing.JDialog jd_buzon;
     private javax.swing.JDialog jd_crearC;
     private javax.swing.JDialog jd_eliminarC;
+    private javax.swing.JDialog jd_emensaje;
     private javax.swing.JDialog jd_modificarC;
     private javax.swing.JList<String> jl_agendaC;
     private javax.swing.JList<String> jl_buzon;
@@ -854,6 +968,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmi_modificarC;
     private javax.swing.JSpinner js_edad;
     private javax.swing.JSpinner js_mod_e_;
+    private javax.swing.JTextArea ta_mensaje;
     private javax.swing.JTextField tf_correo;
     private javax.swing.JTextField tf_direccion;
     private javax.swing.JTextField tf_mod_correo_;
