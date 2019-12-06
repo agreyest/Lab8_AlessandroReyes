@@ -13,11 +13,43 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
+        Dba db = new Dba("./Database1.mdb");
+        db.conectar();
+        try {
+            db.query.execute("select Numero,Nombre,Edad,Correo,Direccion from Contactos");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                contactos.add(new Contacto(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        //----------------------------------------------------------------------------------------------------------------
+        db = new Dba("./Database1.mdb");
+        db.conectar();
+        try {
+            db.query.execute("select Emisor,Receptor,Fecha,Contenido from Mensajes");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                mensajes.add(new Mensaje(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4)));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+        //----------------------------------------------------------------------------------------------------------------
         SpinnerNumberModel YY = new SpinnerNumberModel();
         YY.setMinimum(10);
         YY.setValue(10);
         YY.setMaximum(110);
         js_edad.setModel(YY);
+        
+        SpinnerNumberModel XX = new SpinnerNumberModel();
+        XX.setMinimum(10);
+        XX.setValue(10);
+        XX.setMaximum(110);
+        js_mod_e_.setModel(XX);
     }
 
     /**
@@ -29,7 +61,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jd_listarC = new javax.swing.JDialog();
+        jd_agenda = new javax.swing.JDialog();
         jScrollPane1 = new javax.swing.JScrollPane();
         jl_agendaC = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -67,13 +99,18 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btn_eliC_R_ = new javax.swing.JButton();
         btn_eliC = new javax.swing.JButton();
+        jd_buzon = new javax.swing.JDialog();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jl_buzon = new javax.swing.JList<>();
+        jLabel13 = new javax.swing.JLabel();
+        btn_buzon_r = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jm_acciones = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jmi_agregarC = new javax.swing.JMenuItem();
         jmi_modificarC = new javax.swing.JMenuItem();
         jmi_eliminarC = new javax.swing.JMenuItem();
-        jmi_listarC = new javax.swing.JMenuItem();
+        jmi_agenda = new javax.swing.JMenuItem();
         jmi_enviarM = new javax.swing.JMenuItem();
         jmi_buzon = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -91,30 +128,30 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jd_listarCLayout = new javax.swing.GroupLayout(jd_listarC.getContentPane());
-        jd_listarC.getContentPane().setLayout(jd_listarCLayout);
-        jd_listarCLayout.setHorizontalGroup(
-            jd_listarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_listarCLayout.createSequentialGroup()
-                .addGroup(jd_listarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jd_listarCLayout.createSequentialGroup()
+        javax.swing.GroupLayout jd_agendaLayout = new javax.swing.GroupLayout(jd_agenda.getContentPane());
+        jd_agenda.getContentPane().setLayout(jd_agendaLayout);
+        jd_agendaLayout.setHorizontalGroup(
+            jd_agendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_agendaLayout.createSequentialGroup()
+                .addGroup(jd_agendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jd_agendaLayout.createSequentialGroup()
                         .addComponent(btn_agenda_r_, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(83, 83, 83)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jd_listarCLayout.createSequentialGroup()
+                    .addGroup(jd_agendaLayout.createSequentialGroup()
                         .addGap(259, 259, 259)
                         .addComponent(jLabel1)))
                 .addContainerGap(198, Short.MAX_VALUE))
         );
-        jd_listarCLayout.setVerticalGroup(
-            jd_listarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_listarCLayout.createSequentialGroup()
+        jd_agendaLayout.setVerticalGroup(
+            jd_agendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_agendaLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jd_listarCLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jd_agendaLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btn_agenda_r_, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -203,6 +240,12 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btn_crearC_, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(btn_crear_r_, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+
+        cb_modc_.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_modc_ItemStateChanged(evt);
+            }
+        });
 
         btn_mod_r_.setText("Regresar");
         btn_mod_r_.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -333,6 +376,43 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))
         );
 
+        jl_buzon.setModel(new DefaultListModel());
+        jScrollPane3.setViewportView(jl_buzon);
+
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel13.setText("Buzon de salida");
+
+        btn_buzon_r.setText("Regresar");
+        btn_buzon_r.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_buzon_rMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jd_buzonLayout = new javax.swing.GroupLayout(jd_buzon.getContentPane());
+        jd_buzon.getContentPane().setLayout(jd_buzonLayout);
+        jd_buzonLayout.setHorizontalGroup(
+            jd_buzonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jd_buzonLayout.createSequentialGroup()
+                .addComponent(btn_buzon_r, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addGroup(jd_buzonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(93, 93, 93))
+        );
+        jd_buzonLayout.setVerticalGroup(
+            jd_buzonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_buzonLayout.createSequentialGroup()
+                .addGap(0, 5, Short.MAX_VALUE)
+                .addGroup(jd_buzonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jd_buzonLayout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_buzon_r, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -368,13 +448,13 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu1.add(jmi_eliminarC);
 
-        jmi_listarC.setText("Agenda");
-        jmi_listarC.addActionListener(new java.awt.event.ActionListener() {
+        jmi_agenda.setText("Agenda");
+        jmi_agenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmi_listarCActionPerformed(evt);
+                jmi_agendaActionPerformed(evt);
             }
         });
-        jMenu1.add(jmi_listarC);
+        jMenu1.add(jmi_agenda);
 
         jm_acciones.add(jMenu1);
 
@@ -382,6 +462,11 @@ public class Principal extends javax.swing.JFrame {
         jm_acciones.add(jmi_enviarM);
 
         jmi_buzon.setText("Buzon de salida");
+        jmi_buzon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmi_buzonActionPerformed(evt);
+            }
+        });
         jm_acciones.add(jmi_buzon);
 
         jMenuItem1.setText("Llamar");
@@ -406,36 +491,8 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Dba db = new Dba("./Database1.mdb");
-        db.conectar();
-        try {
-            db.query.execute("select Numero,Nombre,Edad,Correo,Direccion from Contactos");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-                contactos.add(new Contacto(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-        
-        //----------------------------------------------------------------------------------------------------------------
-        db = new Dba("./Database1.mdb");
-        db.conectar();
-        try {
-            db.query.execute("select Emisor,Receptor,Fecha,Contenido from Mensajes");
-            ResultSet rs = db.query.getResultSet();
-            while (rs.next()) {
-                mensajes.add(new Mensaje(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4)));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-        
-        //----------------------------------------------------------------------------------------------------------------
         //crear nuevo mensaje
-        db = new Dba("./Database1.mdb");
+        Dba db = new Dba("./Database1.mdb");
         db.conectar();
         try {
             int c;
@@ -458,7 +515,7 @@ public class Principal extends javax.swing.JFrame {
         db.desconectar();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jmi_listarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_listarCActionPerformed
+    private void jmi_agendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_agendaActionPerformed
         DefaultListModel modelo = (DefaultListModel) jl_agendaC.getModel();
         for (int i = 0; i < contactos.size(); i++) {
             modelo.addElement(contactos.get(i).toString());
@@ -466,11 +523,11 @@ public class Principal extends javax.swing.JFrame {
         jl_agendaC.setModel(modelo);
         
         this.setVisible(false);
-        jd_listarC.setModal(true);
-        jd_listarC.pack();
-        jd_listarC.setLocationRelativeTo(this);
-        jd_listarC.setVisible(true);
-    }//GEN-LAST:event_jmi_listarCActionPerformed
+        jd_agenda.setModal(true);
+        jd_agenda.pack();
+        jd_agenda.setLocationRelativeTo(this);
+        jd_agenda.setVisible(true);
+    }//GEN-LAST:event_jmi_agendaActionPerformed
 
     private void jmi_eliminarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_eliminarCActionPerformed
         DefaultListModel modelo = (DefaultListModel) jl_eliC.getModel();
@@ -480,26 +537,51 @@ public class Principal extends javax.swing.JFrame {
         jl_eliC.setModel(modelo);
         
         this.setVisible(false);
-        jd_listarC.setModal(true);
-        jd_listarC.pack();
-        jd_listarC.setLocationRelativeTo(this);
-        jd_listarC.setVisible(true);
+        jd_eliminarC.setModal(true);
+        jd_eliminarC.pack();
+        jd_eliminarC.setLocationRelativeTo(this);
+        jd_eliminarC.setVisible(true);
     }//GEN-LAST:event_jmi_eliminarCActionPerformed
 
     private void btn_agenda_r_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_agenda_r_MouseClicked
-        jd_listarC.setModal(false);
-        jd_listarC.setVisible(false);
+        DefaultListModel modelo = (DefaultListModel) jl_agendaC.getModel();
+        modelo.removeAllElements();
+        jl_agendaC.setModel(modelo);
+        
+        jd_agenda.setModal(false);
+        jd_agenda.setVisible(false);
         this.setVisible(true);
     }//GEN-LAST:event_btn_agenda_r_MouseClicked
 
     private void btn_eliC_R_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliC_R_MouseClicked
-        jd_listarC.setModal(false);
-        jd_listarC.setVisible(false);
+        DefaultListModel modelo = (DefaultListModel) jl_eliC.getModel();
+        modelo.removeAllElements();
+        jl_eliC.setModel(modelo);
+        
+        jd_eliminarC.setModal(false);
+        jd_eliminarC.setVisible(false);
         this.setVisible(true);
     }//GEN-LAST:event_btn_eliC_R_MouseClicked
 
     private void btn_eliCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliCMouseClicked
-        // TODO add your handling code here:
+        if(jl_eliC.getSelectedIndex() >= 0){
+            Dba db = new Dba("./Database1.mdb");
+            db.conectar();
+            try {
+                db.query.execute("delete from Contactos where cuenta=0");
+                db.commit();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
+            contactos.remove(jl_eliC.getSelectedIndex());
+            DefaultListModel modelo = (DefaultListModel) jl_eliC.getModel();
+            for (int i = 0; i < contactos.size(); i++) {
+                modelo.addElement(contactos.get(i).toString());
+            }
+            jl_eliC.setModel(modelo);
+            JOptionPane.showMessageDialog(jd_eliminarC, "Contacto eliminado con exito");
+        }
     }//GEN-LAST:event_btn_eliCMouseClicked
 
     private void jmi_agregarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_agregarCActionPerformed
@@ -589,16 +671,107 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmi_modificarCActionPerformed
 
     private void btn_mod_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mod_MouseClicked
-        // TODO add your handling code here:
+        Contacto temp = (Contacto) cb_modc_.getSelectedItem();
+        int x = cb_modc_.getSelectedIndex();
+        boolean bande = true;
+        for (int i = 0; i < contactos.size(); i++) {
+            if(Integer.parseInt(tf_mod_num_.getText() ) == contactos.get(i).getNumero() && 
+                    contactos.get(i).getNumero() != temp.getNumero()){
+                JOptionPane.showMessageDialog(jd_modificarC, "Error al modificar, ya existe ese numero");
+                bande = false;
+                break;
+            }
+        }
+        if (tf_mod_num_.getText() == null) {
+            JOptionPane.showMessageDialog(jd_crearC, "Tiene que ingresar un numero telefonico.");
+            bande = false;
+        }
+        if (tf_mod_nom_.getText() == null) {
+            JOptionPane.showMessageDialog(jd_crearC, "Tiene que ingresar un nombre.");
+            bande = false;
+        }
+        if (tf_mod_dir_.getText() == null) {
+            JOptionPane.showMessageDialog(jd_crearC, "Tiene que ingresar una direccion.");
+            bande = false;
+        }
+        if (tf_mod_correo_.getText() == null) {
+            JOptionPane.showMessageDialog(jd_crearC, "Tiene que ingresar un correo.");
+            bande = false;
+        }
+        if(bande){
+            contactos.get(x).setNombre(tf_mod_nom_.getText());
+            contactos.get(x).setNumero(Integer.parseInt(tf_mod_num_.getText()));
+            contactos.get(x).setEdad(js_mod_e_.getComponentCount());
+            contactos.get(x).setCorreo(tf_mod_correo_.getText());
+            contactos.get(x).setDireccion(tf_mod_dir_.getText());
+            Dba db = new Dba("./Database1.mdb");
+            db.conectar();
+            try {
+                db.query.execute("update Contactos set direccion='col Por ahi' where cuenta=0");
+                db.commit();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
+            JOptionPane.showMessageDialog(jd_modificarC, "Modificacion hecha ocn exita");
+            tf_mod_correo_.setText("");
+            tf_mod_dir_.setText("");
+            tf_mod_nom_.setText("");
+            tf_mod_num_.setText("");
+            js_mod_e_.setValue(10);
+        }
     }//GEN-LAST:event_btn_mod_MouseClicked
 
     private void btn_mod_r_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mod_r_MouseClicked
+        tf_mod_correo_.setText("");
+        tf_mod_dir_.setText("");
+        tf_mod_nom_.setText("");
+        tf_mod_num_.setText("");
+        js_mod_e_.setValue(10);
         
+//        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cb_modc_.getModel();
+//        modelo.removeAllElements();
+//        cb_modc_.setModel(modelo);
         
-        jd_crearC.setModal(false);
-        jd_crearC.setVisible(false);
+        jd_modificarC.setModal(false);
+        jd_modificarC.setVisible(false);
         this.setVisible(true);
     }//GEN-LAST:event_btn_mod_r_MouseClicked
+
+    private void cb_modc_ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_modc_ItemStateChanged
+        Contacto temp = (Contacto) cb_modc_.getSelectedItem();
+        if(temp != null){
+            tf_mod_nom_.setText(temp.getNombre());
+            tf_mod_num_.setText(Integer.toString(temp.getNumero()));
+            tf_mod_correo_.setText(temp.getCorreo());
+            tf_mod_dir_.setText(temp.getDireccion());
+            js_mod_e_.setValue(Integer.toString(temp.getEdad()));
+        }
+    }//GEN-LAST:event_cb_modc_ItemStateChanged
+
+    private void jmi_buzonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_buzonActionPerformed
+        DefaultListModel modelo = (DefaultListModel) jl_buzon.getModel();
+        for (int i = 0; i < mensajes.size(); i++) {
+            modelo.addElement(i+") "+mensajes.get(i).toString());
+        }
+        jl_buzon.setModel(modelo);
+        
+        this.setVisible(false);
+        jd_buzon.setModal(true);
+        jd_buzon.pack();
+        jd_buzon.setLocationRelativeTo(this);
+        jd_buzon.setVisible(true);
+    }//GEN-LAST:event_jmi_buzonActionPerformed
+
+    private void btn_buzon_rMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_buzon_rMouseClicked
+        DefaultListModel modelo = (DefaultListModel) jl_buzon.getModel();
+        modelo.removeAllElements();
+        jl_buzon.setModel(modelo);
+        
+        jd_buzon.setModal(false);
+        jd_buzon.setVisible(false);
+        this.setVisible(true);
+    }//GEN-LAST:event_btn_buzon_rMouseClicked
 
     /**
      * @param args the command line arguments
@@ -637,6 +810,7 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agenda_r_;
+    private javax.swing.JButton btn_buzon_r;
     private javax.swing.JButton btn_crearC_;
     private javax.swing.JButton btn_crear_r_;
     private javax.swing.JButton btn_eliC;
@@ -648,6 +822,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -661,18 +836,21 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JDialog jd_agenda;
+    private javax.swing.JDialog jd_buzon;
     private javax.swing.JDialog jd_crearC;
     private javax.swing.JDialog jd_eliminarC;
-    private javax.swing.JDialog jd_listarC;
     private javax.swing.JDialog jd_modificarC;
     private javax.swing.JList<String> jl_agendaC;
+    private javax.swing.JList<String> jl_buzon;
     private javax.swing.JList<String> jl_eliC;
     private javax.swing.JMenu jm_acciones;
+    private javax.swing.JMenuItem jmi_agenda;
     private javax.swing.JMenuItem jmi_agregarC;
     private javax.swing.JMenuItem jmi_buzon;
     private javax.swing.JMenuItem jmi_eliminarC;
     private javax.swing.JMenuItem jmi_enviarM;
-    private javax.swing.JMenuItem jmi_listarC;
     private javax.swing.JMenuItem jmi_modificarC;
     private javax.swing.JSpinner js_edad;
     private javax.swing.JSpinner js_mod_e_;
