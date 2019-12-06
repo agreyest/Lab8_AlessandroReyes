@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -47,6 +48,19 @@ public class Principal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         tf_direccion = new javax.swing.JTextField();
         jd_modificarC = new javax.swing.JDialog();
+        cb_modc_ = new javax.swing.JComboBox<>();
+        btn_mod_r_ = new javax.swing.JButton();
+        btn_mod_ = new javax.swing.JButton();
+        tf_mod_nom_ = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        js_mod_e_ = new javax.swing.JSpinner();
+        jLabel10 = new javax.swing.JLabel();
+        tf_mod_num_ = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        tf_mod_correo_ = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        tf_mod_dir_ = new javax.swing.JTextField();
         jd_eliminarC = new javax.swing.JDialog();
         jScrollPane2 = new javax.swing.JScrollPane();
         jl_eliC = new javax.swing.JList<>();
@@ -190,15 +204,85 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btn_crear_r_, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
+        btn_mod_r_.setText("Regresar");
+        btn_mod_r_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_mod_r_MouseClicked(evt);
+            }
+        });
+
+        btn_mod_.setText("Modificar");
+        btn_mod_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_mod_MouseClicked(evt);
+            }
+        });
+
+        jLabel8.setText("Nombre del contacto");
+
+        jLabel9.setText("Edad del contacto");
+
+        jLabel10.setText("Numero telefonico del contacto");
+
+        jLabel11.setText("Correo electronico del contacto");
+
+        jLabel12.setText("Direccion del contacto");
+
         javax.swing.GroupLayout jd_modificarCLayout = new javax.swing.GroupLayout(jd_modificarC.getContentPane());
         jd_modificarC.getContentPane().setLayout(jd_modificarCLayout);
         jd_modificarCLayout.setHorizontalGroup(
             jd_modificarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(jd_modificarCLayout.createSequentialGroup()
+                .addComponent(cb_modc_, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 424, Short.MAX_VALUE))
+            .addGroup(jd_modificarCLayout.createSequentialGroup()
+                .addComponent(btn_mod_r_, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_mod_, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jd_modificarCLayout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addGroup(jd_modificarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tf_mod_dir_, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                    .addComponent(jLabel12)
+                    .addGroup(jd_modificarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(tf_mod_correo_, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                        .addComponent(jLabel11)
+                        .addComponent(tf_mod_num_)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel8)
+                        .addComponent(tf_mod_nom_)
+                        .addComponent(jLabel9)
+                        .addComponent(js_mod_e_, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jd_modificarCLayout.setVerticalGroup(
             jd_modificarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(jd_modificarCLayout.createSequentialGroup()
+                .addComponent(cb_modc_, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_mod_nom_, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(js_mod_e_, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_mod_num_, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_mod_correo_, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf_mod_dir_, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGroup(jd_modificarCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_mod_, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(btn_mod_r_, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jl_eliC.setModel(new DefaultListModel());
@@ -269,6 +353,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(jmi_agregarC);
 
         jmi_modificarC.setText("Modificar");
+        jmi_modificarC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmi_modificarCActionPerformed(evt);
+            }
+        });
         jMenu1.add(jmi_modificarC);
 
         jmi_eliminarC.setText("Eliminar");
@@ -345,7 +434,7 @@ public class Principal extends javax.swing.JFrame {
         db.desconectar();
         
         //----------------------------------------------------------------------------------------------------------------
-        
+        //crear nuevo mensaje
         db = new Dba("./Database1.mdb");
         db.conectar();
         try {
@@ -482,10 +571,34 @@ public class Principal extends javax.swing.JFrame {
         js_edad.setValue(10);
         tf_correo.setText("");
         tf_direccion.setText("");
+        
         jd_crearC.setModal(false);
         jd_crearC.setVisible(false);
         this.setVisible(true);
     }//GEN-LAST:event_btn_crear_r_MouseClicked
+
+    private void jmi_modificarCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_modificarCActionPerformed
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel(contactos.toArray());
+        cb_modc_.setModel(modelo);
+        
+        this.setVisible(false);
+        jd_modificarC.setModal(true);
+        jd_modificarC.pack();
+        jd_modificarC.setLocationRelativeTo(this);
+        jd_modificarC.setVisible(true);
+    }//GEN-LAST:event_jmi_modificarCActionPerformed
+
+    private void btn_mod_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mod_MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_mod_MouseClicked
+
+    private void btn_mod_r_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mod_r_MouseClicked
+        
+        
+        jd_crearC.setModal(false);
+        jd_crearC.setVisible(false);
+        this.setVisible(true);
+    }//GEN-LAST:event_btn_mod_r_MouseClicked
 
     /**
      * @param args the command line arguments
@@ -528,13 +641,21 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btn_crear_r_;
     private javax.swing.JButton btn_eliC;
     private javax.swing.JButton btn_eliC_R_;
+    private javax.swing.JButton btn_mod_;
+    private javax.swing.JButton btn_mod_r_;
+    private javax.swing.JComboBox<String> cb_modc_;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -554,8 +675,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmi_listarC;
     private javax.swing.JMenuItem jmi_modificarC;
     private javax.swing.JSpinner js_edad;
+    private javax.swing.JSpinner js_mod_e_;
     private javax.swing.JTextField tf_correo;
     private javax.swing.JTextField tf_direccion;
+    private javax.swing.JTextField tf_mod_correo_;
+    private javax.swing.JTextField tf_mod_dir_;
+    private javax.swing.JTextField tf_mod_nom_;
+    private javax.swing.JTextField tf_mod_num_;
     private javax.swing.JTextField tf_nom;
     private javax.swing.JTextField tf_num;
     // End of variables declaration//GEN-END:variables
