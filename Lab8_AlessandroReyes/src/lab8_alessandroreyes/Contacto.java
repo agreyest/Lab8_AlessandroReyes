@@ -7,9 +7,10 @@ public class Contacto {
     private String correo;
     private String direccion;
 
-    public Contacto(String nombre, int edad, int numero, String correo, String direccion) {
+    public Contacto(int numero, String nombre, int edad, String correo, String direccion) {
         this.nombre = nombre;
-        this.edad = edad;
+        if(edad >= 10 && edad <=110)
+            this.edad = edad;
         if(numero>= 10000000 && numero <= 99999999)
             this.numero = numero;
         this.correo = correo;
@@ -29,7 +30,8 @@ public class Contacto {
     }
 
     public void setEdad(int edad) {
-        this.edad = edad;
+        if(edad >= 10 && edad <=110)
+            this.edad = edad;
     }
 
     public int getNumero() {
