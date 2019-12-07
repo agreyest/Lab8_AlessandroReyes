@@ -25,6 +25,9 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         db.desconectar();
+        for (int i = 0; i < contactos.size(); i++) {
+            System.out.println(i+") "+contactos.get(i));
+        }
         //----------------------------------------------------------------------------------------------------------------
         db = new Dba("./Database1.mdb");
         db.conectar();
@@ -481,11 +484,6 @@ public class Principal extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         jm_acciones.setText("Acciones");
 
@@ -562,31 +560,6 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //crear nuevo mensaje
-        Dba db = new Dba("./Database1.mdb");
-        db.conectar();
-        try {
-            int c;
-            String n;
-            for (int i = 0; i < mensajes.size(); i++) {
-                String emisor = mensajes.get(i).getEmisor();
-                String receptor = mensajes.get(i).getReceptor();
-                Date fecha = mensajes.get(i).getFecha();
-                String contenido = mensajes.get(i).getContenido();
-                db.query.execute("INSERT INTO Mensajes"
-                        + " (Emisor,Receptor,Fecha,Contenido)"
-                        + " VALUES ('" + emisor + "', '" + receptor + "', '" + fecha + "', '" + contenido +  "')");// " VALUES (?,?)");
-                db.commit();
-            }
-
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-    }//GEN-LAST:event_formWindowClosing
-
     private void jmi_agendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_agendaActionPerformed
         DefaultListModel modelo = (DefaultListModel) jl_agendaC.getModel();
         for (int i = 0; i < contactos.size(); i++) {
@@ -641,7 +614,7 @@ public class Principal extends javax.swing.JFrame {
             db.conectar();
             int x=jl_eliC.getSelectedIndex();
             try {
-                db.query.execute("delete from Contactos where cuenta=contactos.get(x).getNumero()");
+                db.query.execute("delete from Contactos where Numero="+contactos.get(x).getNumero());
                 db.commit();
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -693,11 +666,9 @@ public class Principal extends javax.swing.JFrame {
             Dba db = new Dba("./Database1.mdb");
             db.conectar();
             try {
-                int c;
-                String n;
                 int num = Integer.parseInt(tf_num.getText());
                 String nom = tf_nom.getText();
-                int edad = js_edad.getComponentCount();
+                int edad = (int) js_edad.getValue();
                 String correo = tf_correo.getText();
                 String direccion = tf_direccion.getText();
                 db.query.execute("INSERT INTO Contactos"
@@ -743,6 +714,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btn_mod_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mod_MouseClicked
         Contacto temp = (Contacto) cb_modc_.getSelectedItem();
+        int av=temp.getNumero();
         int x = cb_modc_.getSelectedIndex();
         boolean bande = true;
         for (int i = 0; i < contactos.size(); i++) {
@@ -775,21 +747,21 @@ public class Principal extends javax.swing.JFrame {
             contactos.get(x).setNumero(Integer.parseInt(tf_mod_num_.getText()));
             int num = Integer.parseInt(tf_mod_num_.getText());
             contactos.get(x).setEdad(js_mod_e_.getComponentCount());
-            int ed =  js_mod_e_.getComponentCount();
+            int ed =  (int)js_mod_e_.getValue();
             contactos.get(x).setCorreo(tf_mod_correo_.getText()); 
-            String cor=tf_mod_correo_.getText();
+            String cor= tf_mod_correo_.getText();
             contactos.get(x).setDireccion(tf_mod_dir_.getText());
-            String dir=tf_mod_dir_.getText();
+            String dir= tf_mod_dir_.getText();
             Dba db = new Dba("./Database1.mdb");
             db.conectar();
             try {
-                db.query.execute("update Contactos set Numero='num', Nombre='nom', Edad='ed', Correo='cor', Direccion='dir'  where cuenta=0");
+                db.query.execute("update Contactos set Numero='"+num+"', Nombre='"+nom+"', Edad='"+ed+"', Correo='"+cor+"', Direccion='"+dir+"'  where Numero="+av);
                 db.commit();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
             db.desconectar();
-            JOptionPane.showMessageDialog(jd_modificarC, "Modificacion hecha ocn exita");
+            JOptionPane.showMessageDialog(jd_modificarC, "Modificacion hecha con exita");
             tf_mod_correo_.setText("");
             tf_mod_dir_.setText("");
             tf_mod_nom_.setText("");
@@ -821,7 +793,7 @@ public class Principal extends javax.swing.JFrame {
             tf_mod_num_.setText(Integer.toString(temp.getNumero()));
             tf_mod_correo_.setText(temp.getCorreo());
             tf_mod_dir_.setText(temp.getDireccion());
-            js_mod_e_.setValue(Integer.toString(temp.getEdad()));
+            js_mod_e_.setValue(temp.getEdad());
         }
     }//GEN-LAST:event_cb_modc_ItemStateChanged
 
@@ -843,7 +815,7 @@ public class Principal extends javax.swing.JFrame {
         DefaultListModel modelo = (DefaultListModel) jl_buzon.getModel();
         modelo.removeAllElements();
         jl_buzon.setModel(modelo);
-        
+
         jd_buzon.setModal(false);
         jd_buzon.setVisible(false);
         this.setVisible(true);
@@ -852,7 +824,7 @@ public class Principal extends javax.swing.JFrame {
     private void jmi_enviarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_enviarMActionPerformed
         DefaultComboBoxModel modelo = new DefaultComboBoxModel(contactos.toArray());
         cb_emensaje.setModel(modelo);
-        
+
         this.setVisible(false);
         jd_emensaje.setModal(true);
         jd_emensaje.pack();
@@ -862,7 +834,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btn_enviarM_r_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_enviarM_r_MouseClicked
         ta_mensaje.setText("");
-        
+
         jd_emensaje.setModal(false);
         jd_emensaje.setVisible(false);
         this.setVisible(true);
@@ -871,12 +843,29 @@ public class Principal extends javax.swing.JFrame {
     private void btn_enviarMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_enviarMMouseClicked
         Contacto temp = (Contacto) cb_emensaje.getSelectedItem();
         boolean bande = true;
-        if(ta_mensaje.getText()==null){
+        if (ta_mensaje.getText() == null) {
             bande = false;
             JOptionPane.showMessageDialog(jd_emensaje, "Tiene que ingresar un mensaje");
         }
-        if(bande){
+        if (bande) {
             mensajes.add(new Mensaje("ayo", temp.getNombre(), new Date(), ta_mensaje.getText()));
+            //crear nuevo mensaje
+            Dba db = new Dba("./Database1.mdb");
+            db.conectar();
+            try {
+                String emisor = "AYO";
+                String receptor = temp.getNombre();
+                Date fecha =  new Date();
+                String contenido = ta_mensaje.getText();
+                db.query.execute("INSERT INTO Mensajes"
+                        + " (Emisor,Receptor,Fecha,Contenido)"
+                        + " VALUES ('" + emisor + "', '" + receptor + "', '" + fecha + "', '" + contenido + "')");// " VALUES (?,?)");
+                db.commit();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
         }
     }//GEN-LAST:event_btn_enviarMMouseClicked
 
