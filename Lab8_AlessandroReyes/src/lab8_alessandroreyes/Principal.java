@@ -2,6 +2,8 @@ package lab8_alessandroreyes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
@@ -855,13 +857,20 @@ public class Principal extends javax.swing.JFrame {
             try {
                 String emisor = "AYO";
                 String receptor = temp.getNombre();
-                Date fecha =  new Date();
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                String strDate = formatter.format(date);
                 String contenido = ta_mensaje.getText();
                 db.query.execute("INSERT INTO Mensajes"
                         + " (Emisor,Receptor,Fecha,Contenido)"
-                        + " VALUES ('" + emisor + "', '" + receptor + "', '" + fecha + "', '" + contenido + "')");// " VALUES (?,?)");
+                        + " VALUES ('" + emisor + "', '" + receptor + "', '" + strDate + "', '" + contenido + "')");// " VALUES (?,?)");
                 db.commit();
-
+                /*
+                "INSERT INTO Contactos"
+                        + " (Numero,Nombre,Edad,Correo,Direccion)"
+                        + " VALUES ('" + num + "', '" + nom + "', '" + edad + "', '" + correo + "', '" + direccion + "')");// " VALUES (?,?)");
+                db.commit();
+                */
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
